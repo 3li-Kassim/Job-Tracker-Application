@@ -1,9 +1,10 @@
-from flask import request,make_response
+from flask import request,make_response,jsonify
 from app.extensions import db
 from flask_login import current_user
 from app.dashboard import dash
 from flask_login import login_required
 from app.models import JobApplication
+
 
 
 @dash.route("/jobs", methods=["GET","POST"])
@@ -24,3 +25,6 @@ def job_handler():
         db.session.add(job_app)
         db.session.commit()
         return make_response("",200)
+    user_jobs = JobApplication.query.filter_by(user_id =current_user.id).all()
+    result = [{"company": job.company, "role": job.role, "location": job.location, "job_link": job.job_link, "status": job.status, "result": job.result, "date_applied": job.date_applied, "feedback_date": job.feedback_date} for job in user_jobs]
+    return jsonify(result),200
