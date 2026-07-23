@@ -12,6 +12,7 @@ from app.models import JobApplication
 def job_handler():
     if request.method =="POST":
         data = request.get_json(silent = True)
+        #need to add a new condition for checking if empty or not
         company = data["company"]
         role = data["role"]
         location = data["location"]
