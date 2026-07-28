@@ -4,6 +4,7 @@ from flask_login import current_user
 from app.dashboard import dash
 from flask_login import login_required
 from app.models import JobApplication
+import datetime
 
 
 
@@ -21,8 +22,9 @@ def job_handler():
             job_link = data["jobLink"]
             status = data["status"]
             result = data["result"]
-            date_applied =data["dateApplied"]
-            feedback_date = data["feedbackDate"]
+            date_applied = datetime.strptime(data["dateApplied"], "%Y-%m-%d").date()
+            feedback_date = datetime.strptime(data["feedbackDate"], "%Y-%m-%d").date()
+            
 
         if not company or not role or not location or not status or not date_applied:
             return make_response("",400)

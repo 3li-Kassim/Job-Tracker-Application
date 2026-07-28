@@ -58,7 +58,7 @@ export function ModalComp(props){
 
     return(
         <div className="modal show mt-5" style={{display: 'block', position:'fixed'}}>
-            <Modal show={props.open} onHide={props.onClose} centered>
+            <Modal show={true} onHide={props.onClose} centered>
                 <Modal.Header >
                     <Modal.Title className="fw-bold ">Add Job Application</Modal.Title>
                 </Modal.Header>
