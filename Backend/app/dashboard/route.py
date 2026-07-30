@@ -4,7 +4,7 @@ from flask_login import current_user
 from app.dashboard import dash
 from flask_login import login_required
 from app.models import JobApplication
-import datetime
+from datetime import datetime
 
 
 
@@ -23,7 +23,7 @@ def job_handler():
             status = data["status"]
             result = data["result"]
             date_applied = datetime.strptime(data["dateApplied"], "%Y-%m-%d").date()
-            feedback_date = datetime.strptime(data["feedbackDate"], "%Y-%m-%d").date()
+            feedback_date = datetime.strptime(data["feedbackDate"], "%Y-%m-%d").date() if data["feedbackDate"] else None
             
 
         if not company or not role or not location or not status or not date_applied:
@@ -37,4 +37,16 @@ def job_handler():
             return make_response("",200)
     user_jobs = JobApplication.query.filter_by(user_id =current_user.id).all()
     result = [{"company": job.company, "role": job.role, "location": job.location, "job_link": job.job_link, "status": job.status, "result": job.result, "date_applied": job.date_applied, "feedback_date": job.feedback_date} for job in user_jobs]
-    return jsonify(result),200      
+    return jsonify(result),200
+
+
+
+@dash.route("/jobs/<int:job_id>", methods=["DELETE"])
+@login_required
+def delete_job(job_id):
+    job_app = JobApplication.query.filter_by(id = job_id, user_id = current_user.id).first()
+    if not job_app:
+        return make_response("",404)
+    db.session.delete(job_app)
+    db.session.commit()
+    return make_response("",200)
