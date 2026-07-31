@@ -7,10 +7,21 @@ export function Dashboard() {
 
   const handleShow = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
-
+  
+  const [isSuccess, setIsSuccess] = useState(false)
   const [jobs, setJobs] = useState([]);
-
+  const [displayMsg, setDisplayMsg] = useState(null);
   const [error, setError] = useState(null);
+  const [editingJob, setEditingJob] = useState(null);
+ 
+
+
+  const handleEdit = (job) =>{
+    setEditingJob(job);
+    setModalOpen(true);
+  }
+
+  const alertColor = isSuccess ? 'alert-success' : 'alert-danger';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +45,7 @@ export function Dashboard() {
   return (
     <div className="container">
       {error && <div className="alert alert-danger">{error}</div>}
+      {displayMsg && <div className={`alert ${alertColor}`}>{displayMsg}</div>}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 className="fw-bold text-white mb-0">My Job Applications</h2>
@@ -45,10 +57,13 @@ export function Dashboard() {
         <button className="add-btn job-btn" onClick={handleShow}>
           + Add Job
         </button>
-        {modalOpen && <ModalComp onClose={handleClose} />}
+        {modalOpen && <ModalComp editingJob={editingJob} onClose={handleClose}  />}
       </div>
 
-      <JobTable getJobs={jobs} />
+      <JobTable onEdit={handleEdit} getJobs={jobs} onDeleteResult ={(success, message) => {
+        setIsSuccess(success);
+        setDisplayMsg(message);
+      }} />
     </div>
   );
 }

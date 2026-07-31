@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 
 export function ModalComp(props) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState(props.editingJob || {
     company: "",
     role: "",
     location: "",
@@ -27,6 +27,28 @@ export function ModalComp(props) {
   const alert = isSuccess ? "alert-success" : "alert-danger";
 
   const sendForm = async () => {
+    if(props.editingJob){
+      const response = await fetch(`/api/jobs/${props.editingJob.id}`,{
+        methods:"PATCH",
+        headers:{"Content-Type" : "application/json"},
+        body:JSON.stringify(formData),
+      });
+
+      if(response.ok){
+        setIsSuccess(true);
+        setDisplayMsg("Job Application Updated");
+
+      }
+      else if(response.status === 400){
+        setIsSuccess(false);
+        setDisplayMsg("Please fill all the required fields!");
+      }
+      else{
+        setIsSuccess(false);
+        setDisplayMsg("Failed, please try again later!");
+      }
+    }
+    else{
     if (
       formData.company === "" ||
       formData.role === "" ||
@@ -50,6 +72,7 @@ export function ModalComp(props) {
         setDisplayMsg("Please fill all the required fields!");
       }
     }
+  }
   };
 
   return (
