@@ -29,7 +29,7 @@ export function ModalComp(props) {
   const sendForm = async () => {
     if(props.editingJob){
       const response = await fetch(`/api/jobs/${props.editingJob.id}`,{
-        methods:"PATCH",
+        method:"PATCH",
         headers:{"Content-Type" : "application/json"},
         body:JSON.stringify(formData),
       });

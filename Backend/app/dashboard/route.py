@@ -36,7 +36,18 @@ def job_handler():
             db.session.commit()
             return make_response("",200)
     user_jobs = JobApplication.query.filter_by(user_id =current_user.id).all()
-    result = [{"id": job.id ,"company": job.company, "role": job.role, "location": job.location, "job_link": job.job_link, "status": job.status, "result": job.result, "date_applied": job.date_applied, "feedback_date": job.feedback_date} for job in user_jobs]
+    result = [{
+        "id": job.id ,
+        "company": job.company, 
+        "role": job.role, 
+        "location": job.location, 
+        "jobLink": job.job_link, 
+        "status": job.status, 
+        "result": job.result, 
+        "dateApplied": job.date_applied, 
+        "feedbackDate": job.feedback_date} 
+        for job in user_jobs]
+
     return jsonify(result),200
 
 
