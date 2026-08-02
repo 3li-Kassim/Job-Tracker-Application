@@ -37,6 +37,12 @@ export function ModalComp(props) {
       if(response.ok){
         setIsSuccess(true);
         setDisplayMsg("Job Application Updated");
+        setTimeout(() => {
+          props.onClose();
+          
+          props.onRefresh();
+        },1500);
+        
 
       }
       else if(response.status === 400){
@@ -67,6 +73,7 @@ export function ModalComp(props) {
       if (response.ok) {
         setIsSuccess(true);
         setDisplayMsg("Job Application Added");
+        props.onRefresh();
       } else if (response.status == 400) {
         setIsSuccess(false);
         setDisplayMsg("Please fill all the required fields!");

@@ -22,6 +22,7 @@ export function Login() {
     if (response.ok){
         setIsSuccess(true);
         navigate('/dashboard');
+        window.location.reload();
       }
       else if(response.status === 401){
         setDisplayMsg("Wrong email or password");

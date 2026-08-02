@@ -44,8 +44,8 @@ def job_handler():
         "jobLink": job.job_link, 
         "status": job.status, 
         "result": job.result, 
-        "dateApplied": job.date_applied, 
-        "feedbackDate": job.feedback_date} 
+        "dateApplied": job.date_applied.strftime("%Y-%m-%d") if job.date_applied else None,
+        "feedbackDate": job.feedback_date.strftime("%Y-%m-%d") if job.feedback_date else None,} 
         for job in user_jobs]
 
     return jsonify(result),200

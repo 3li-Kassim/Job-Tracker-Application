@@ -21,10 +21,8 @@ export function Dashboard() {
     setModalOpen(true);
   }
 
-  const alertColor = isSuccess ? 'alert-success' : 'alert-danger';
 
-  useEffect(() => {
-    const fetchData = async () => {
+   const fetchData = async () => {
       try {
         const response = await fetch("/api/jobs");
         if (!response.ok) {
@@ -39,13 +37,17 @@ export function Dashboard() {
       }
     };
 
+  const alertColor = isSuccess ? 'alert-success' : 'alert-danger';
+
+  useEffect(() => {
     fetchData();
   }, []);
 
   return (
     <div className="container">
       {error && <div className="alert alert-danger">{error}</div>}
-      {displayMsg && <div className={`alert ${alertColor}`}>{displayMsg}</div>}
+      {displayMsg && 
+      <div className={`alert ${alertColor}`}>{displayMsg}</div>}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 className="fw-bold text-white mb-0">My Job Applications</h2>
@@ -57,10 +59,10 @@ export function Dashboard() {
         <button className="add-btn job-btn" onClick={handleShow}>
           + Add Job
         </button>
-        {modalOpen && <ModalComp editingJob={editingJob} onClose={handleClose}  />}
+        {modalOpen && <ModalComp editingJob={editingJob} onClose={handleClose} onRefresh={fetchData} />}
       </div>
 
-      <JobTable onEdit={handleEdit} getJobs={jobs} onDeleteResult ={(success, message) => {
+      <JobTable onRefresh={fetchData} onEdit={handleEdit} getJobs={jobs} onDeleteResult ={(success, message) => {
         setIsSuccess(success);
         setDisplayMsg(message);
       }} />

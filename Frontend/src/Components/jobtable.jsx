@@ -8,6 +8,7 @@ export function JobTable(props) {
 
       if (response.ok) {
         props.onDeleteResult(true, "Job deleted successfully");
+        props.onRefresh();
       } else if (response.status === 404) {
         props.onDeleteResult(false, "Failed to delete job");
       }
@@ -50,9 +51,9 @@ export function JobTable(props) {
                   {item.location}
                 </td>
                 <td className="text-center">
-                  {item.job_link ? (
+                  {item.jobLink ? (
                     <a
-                      href={item.job_link}
+                      href={item.jobLink}
                       target="_blank"
                       rel="noreferrer"
                       className="btn btn-sm btn-outline-info rounded-pill px-3 text-center"
@@ -69,12 +70,11 @@ export function JobTable(props) {
                   </span>
                 </td>
                 <td className="text-secondary small text-center">
-                  {new Date(item.date_applied).toLocaleDateString() || "—"}
+                  {item.dateApplied ? new Date(item.dateApplied).toLocaleDateString() : "—"}
                 </td>
                 <td className="text-secondary small text-center">
-                  {item.feedback_date
-                    ? new Date(item.feedback_date).toLocaleDateString()
-                    : "—"}
+                {item.feedbackDate ? new Date(item.feedbackDate).toLocaleDateString() : "—"}
+                    
                 </td>
                 <td className="text-center">
                   <span
