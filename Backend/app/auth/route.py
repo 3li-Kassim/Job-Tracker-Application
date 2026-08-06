@@ -14,7 +14,7 @@ def register():
         password = data["password"]
         existing_user = User.query.filter_by(email = email).first()
         if not existing_user:
-            password = bcrypt.generate_password_hash(password)
+            password = bcrypt.generate_password_hash(password).decode("utf-8")
             user = User(username= username, email = email, password= password)
             db.session.add(user)
             db.session.commit()

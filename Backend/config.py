@@ -1,5 +1,8 @@
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class Config:
     SECRET_KEY = "supersecretkey"
-    SQLALCHEMY_DATABASE_URI = "sqlite:///user.db"
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
